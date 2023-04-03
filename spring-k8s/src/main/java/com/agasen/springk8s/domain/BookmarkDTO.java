@@ -1,39 +1,19 @@
 package com.agasen.springk8s.domain;
 
-import java.util.List;
+import java.time.Instant;
 
-import org.springframework.data.domain.Page;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookmarkDTO {
-  private List<Bookmark> data;
-  private long totalElements;
-  private int totalPages;
-  private int currentPage;
-
-  @JsonProperty("isFirst")
-  private boolean isFirst;
-
-  @JsonProperty("isLast")
-  private boolean isLast;
-
-  private boolean hasNext;
-  private boolean hasPrevious;
-
-  public BookmarkDTO(Page<Bookmark> bookmarkPage) {
-    this.data = bookmarkPage.getContent();
-    this.totalElements = bookmarkPage.getTotalElements();
-    this.totalPages = bookmarkPage.getTotalPages();
-    this.currentPage = bookmarkPage.getNumber() + 1;
-    this.isFirst = bookmarkPage.isFirst();
-    this.isLast = bookmarkPage.isLast();
-    this.hasNext = bookmarkPage.hasNext();
-    this.hasPrevious = bookmarkPage.hasPrevious();
-  }
+  private Long id;
+  private String title;
+  private String url;
+  private Instant createdAt;
 }

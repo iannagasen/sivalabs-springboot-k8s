@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookmarkService {
   private final BookmarkRepository bookmarkRepository;
+  private final BookmarkMapper bookmarkMapper;
 
   /**
    * What is @Transactional(readOnly = true)?
@@ -27,10 +28,12 @@ public class BookmarkService {
    * retrieved based on order by "createdAt" property
    */
   @Transactional(readOnly = true)
-  public BookmarkDTO getBookmarks(int page) {
+  public BookmarksDTO getBookmarks(int page) {
     int pageNo = page < 1 ? 0 : page - 1;
     Pageable pageable = PageRequest.of(pageNo, 5, Sort.Direction.DESC, "createdAt");
-    Page<Bookmark> bookmarkPage = bookmarkRepository.findAll(pageable);
-    return new BookmarkDTO(bookmarkPage);
+    // Page<BookmarkDTO> bookmarkPage =
+    // bookmarkRepository.findAll(pageable).map(bookmarkMapper);
+    Page<BookmarkDTO> bookmarkPage = bookmarkRepository.findBookmarks(pageable);
+    return new BookmarksDTO(bookmarkPage);
   }
 }

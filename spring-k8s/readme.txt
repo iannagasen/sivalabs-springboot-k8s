@@ -38,4 +38,14 @@ Check DatabaseDriver class
 {vendor} -> productName.toLowerCase();
 H2 -> h2
 
+-----------
+5. Using Spring Data Jpa DTO Projections
+
+in the List View, we dont need to expose all the properties and columns from database.
+  - We should load only what we needed
+
+SEE docs for sprind data jpa projections
+2 Ways to create Projections:
+  1. Class-based projection using DTO
+  2. Interface-based
 
