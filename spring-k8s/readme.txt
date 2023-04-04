@@ -49,3 +49,55 @@ SEE docs for sprind data jpa projections
   1. Class-based projection using DTO
   2. Interface-based
 
+-----------
+6. API Integration Testing using Testcontainers
+
+Use @SpringBootTest 
+  - allows to write Integration Test
+  - allows to startup the entire Spring context, including all beans and configurations,
+    and run tests against the running application
+  - You can use Spring features like Dependency Injection and auto-configuration in your test logic
+
+Different webEnvironments for @SpringBootTest
+1. MOCK
+  - default web environment
+  - It starts an embedded web server but does NOT bind to a network interface.
+    Instead, requests are intercepted and handled by a MockMvc instance, 
+    which provides a fluent API for testing web endpoints. 
+  - it is useful for testing the controller layer of your application, 
+    without the need for a full web server.
+  - It's also faster than the other environments, 
+    as it doesn't require starting a full server.
+
+2. RANDOM_PORT
+  - This environment starts an embedded web server 
+    and binds it to a random port on the network interface
+  - It is useful for testing the integration between your application and external systems, 
+    such as a database or another web service
+  - It's also useful for testing the behavior of your application under load, 
+    as you can run multiple instances of the test in PARALLEL.
+  - It's useful when your running application in build pipelines like Jenkins,
+    it will pick a AVAILABLE random port so that it will not have a conflict even the build server is running multiple builds parallel.
+
+3. DEFINED_PORT
+  - This environment is similar to RANDOM_PORT, 
+    but it binds the server to a predefined port instead of a random one.
+  - This can be useful if you need to test against a specific port that is already reserved for your application.
+  - This environment is useful for testing the deployment 
+    and configuration of your application in a production-like environment.
+
+4. NONE
+  - This environment starts the Spring context without any web server
+  - It's useful for testing the non-web components of your application, 
+    such as services and repositories
+  - This environment is also faster than the other environments, 
+    as it doesn't require starting a web server
+
+@AutoConfigureMockMvc
+  - an be used in integration tests to automatically configure and inject a MockMvc instance into the test class.
+
+MockMvc
+  - Spring Test framework that provides a way to test web endpoints without actually starting an HTTP server
+  - Instead, it allows you to simulate HTTP requests and responses by calling your controllers directly, 
+    which makes your tests faster and more focused.
+  
