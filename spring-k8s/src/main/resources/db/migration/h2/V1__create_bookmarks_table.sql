@@ -7,3 +7,5 @@ create table bookmarks (
   created_at timestamp(6) with time zone,
   primary key (id)
 );
+
+

@@ -101,3 +101,6 @@ MockMvc
   - Instead, it allows you to simulate HTTP requests and responses by calling your controllers directly, 
     which makes your tests faster and more focused.
   
+Using testcontainers:
+  for configuration of jdbc url, see: https://www.testcontainers.org/modules/databases/jdbc/
+  

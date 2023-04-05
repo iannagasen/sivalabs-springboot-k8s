@@ -14,7 +14,7 @@
 	<name>spring-k8s</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>20</java.version>
+		<java.version>19</java.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
 	</properties>
 	<dependencies>
@@ -79,6 +79,13 @@
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+    	<groupId>org.testcontainers</groupId>
+    	<artifactId>postgresql</artifactId>
+    	<version>1.17.6</version>
+    	<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
