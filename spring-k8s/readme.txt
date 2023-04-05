@@ -218,3 +218,9 @@ Using testcontainers:
   1. Go to github repo
   2. Click the Settings Tab
   3. Under General, Go to Secrets
+
+
+  command to run when faced with issue:
+    ./mvnw: Permission denied
+  git update-index --chmod=+x your_script.sh
+  >>  git update-index --chmod=+x  .github/workflows/build.yaml
