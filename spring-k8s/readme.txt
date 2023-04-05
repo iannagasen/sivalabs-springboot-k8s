@@ -104,3 +104,106 @@ MockMvc
 Using testcontainers:
   for configuration of jdbc url, see: https://www.testcontainers.org/modules/databases/jdbc/
   
+
+
+-----------
+7. Dockerizing SpringBoot application
+
+  Different ways to create docker image for springboot app
+    1. Dockerfiles using fat-jar
+
+    2. Multistage Dockerfile with layers
+
+    3. Springboot Maven/Gradle plugin using Buildpacks
+      Use the maven wrapper provided by springboot
+      >> ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=<dockerhub_username>/<app_name>
+      >> ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=ianagasen/spring-api
+
+      OR add this to the pom.xml under build.plugins.plugin
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <configuration>
+        <image>
+          <name>ianagasen/spring-api</name>
+        <image>
+      </configuration>
+
+      and run this command removing the command line argument -D
+      >> ./mvnw spring-boot:build-image
+
+      to run:
+      >> docker run -p 8080:8080 ianagasen/spring-api
+      where -p is to publich a container's port to host's port
+
+      to check: http://localhost:8081/api/bookmarks?page=2
+
+    4. Jib Maven/Gradle Plugin(from google)
+      from: https://github.com/GoogleContainerTools/jib
+        - add the plugin specified
+      
+      once the plugin is added to pom.xml
+      run:
+      >> ./mvnw jib:dockerBuild
+        - build the image locally and DONT want to push
+        - but this requires local docker
+
+      NOTE: ./mvnw jib:build
+        - will create a docker image and will auto push through to docker repository
+        - it will not use docker Daemon
+
+  From ChatGPT: How to dockerize a spring boot app
+    1. Create a Docker file. Create a file named 'Dockerfile' in the root directory of the spring boot app
+      - A dockerfile is a script that contains instructions for build a Docker image.
+
+    2. Specify a base image.
+      - The first line in the Dockerfile should specify a base image to use as the starting point
+        for building your Docker image
+      - Example: You can use the official OpenJDK image
+        >> FROM openjdk:11
+
+    3. Setup the working directory. 
+      - Use the `WORKDIR` instruction to set the working directory in the Docker image
+      Ex >> WORKDIR /app
+    4. Copy the application files:
+      - Use the `COPY` instruction to copy the application files into the Docker image
+      Ex >> COPY target/myapp.jar /app
+    
+      NOTE: This assumes that you have already built your Spring Boot app as a jar file
+
+    5. Expose the port:
+      - Use the `EXPOSE` instruction to expose the port that your spring boot app listens on
+      Ex >> EXPOSE 8080
+
+    6. Specify the command to run:
+      - Use the `CMD` instruction to specify the command to run when a container is started
+        based on the Docker image.
+      - For a SpringBoot App the command is usually `java - jar` command to run the jar file
+      Ex >> ENTRYPOINT ["java", "-jar", "/app/myapp.jar"]
+
+    7. Build the Docker image: 
+      - Use the `docker build` command to build the Docker image. (in CLI)
+      Ex >> docker build -t myapp-image .
+
+      NOTE: This assumes that you are in the directory that contains the Dockerfile
+
+    8. Run the Docker container:
+    - Use the `docker run` command to run a container based on the Docker image.
+    Ex >> docker run -p 8080:8080 myapp-image
+      - this maps the container's port 8080 to the host's port 8080 so that you can access the app 
+        in a web browser `http://localhost:8080`
+
+    
+    Examples of Dockerfile
+    1. >>
+      FROM openjdk:11-jre-slim
+      COPY target/myapp.jar /app.jar
+      ENTRYPOINT ["java","-jar","/app.jar"]
+
+    2. >> 
+      FROM openjdk:11
+      WORKDIR /app
+      COPY target/myapp.jar /app
+      EXPOSE 8080
+      CMD ["java", "-jar", "/app/myapp.jar"]
+
+    See CMD vs ENTRYPOINT in cgpt

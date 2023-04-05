@@ -106,6 +106,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+        	<image>
+          	<name>ianagasen/spring-api</name>
+        	</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -114,6 +117,30 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- add JIB plugin from Google -->
+			<plugin>
+			  <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+					<from>
+						<image>eclipse-temurin:19.0.2_7-jre-focal</image>
+					</from>
+          <to>
+            <image>ianneilagasen/spring-api-jib</image>
+						<tags>
+							<tag>latest</tag>
+							<tag>0.0.1</tag>
+						</tags>
+          </to>
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+					</container>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 	<repositories>
