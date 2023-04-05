@@ -14,6 +14,10 @@ jobs:
     name: Build bookmarker-api
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./spring-k8s
+
     steps:
       - uses: actions/checkout@v3
 
