@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./spring-k8s
+        working-directory: "./spring-k8s"
 
     steps:
       - uses: actions/checkout@v3
