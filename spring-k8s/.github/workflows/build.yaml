@@ -1,0 +1,46 @@
+name: Java CI with Maven
+
+on:
+  push:
+    # on push even on main branch jobs object defined below will execute
+    # value of "**" will listen on all branch
+    branches: ["**"]
+#   pull_request:
+#     branches: [ "main" ]
+
+# this is the pipeline, where we can run multiple jobs
+jobs:
+  build:
+    name: Build bookmarker-api
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        # dependencies of the step
+        with:
+          java-version: "19"
+          distribution: "temurin"
+          # dependencies dont change quite often, so instead of downloading all the dependencies once the pipeline runs, we cache it
+          cache: maven
+
+      - name: Build with Maven
+        # verify = compile, run all the tests, create the jar file
+        run: ./mvnw verify
+
+      # Conditional run a step
+      # if this main branch is main, execute the step
+      # we skip test `-DskipTests`, because we are already running the test from previous step
+      - if: ${{ github.ref == 'refs/head/main' }}
+        name: Build and Publich Docker Image
+        run: |
+          ./mvnw clean package jib:dockerBuild -DskipTests
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/bookmarker-api
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+
+#     - name: Update dependency graph
+#       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6

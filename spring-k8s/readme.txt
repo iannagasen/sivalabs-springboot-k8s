@@ -207,3 +207,14 @@ Using testcontainers:
       CMD ["java", "-jar", "/app/myapp.jar"]
 
     See CMD vs ENTRYPOINT in cgpt
+
+
+
+
+-----------
+8. Continuous Integration using GitHub Actions
+
+  To configure secrets:
+  1. Go to github repo
+  2. Click the Settings Tab
+  3. Under General, Go to Secrets
