@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: "./spring-k8s"
+        working-directory: ./spring-k8s
 
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +32,9 @@ jobs:
 
       - name: Build with Maven
         # verify = compile, run all the tests, create the jar file
-        run: ./mvnw verify
+        run: |
+          chmod +x mvnw
+          ./mvnw verify
 
       # Conditional run a step
       # if this main branch is main, execute the step
