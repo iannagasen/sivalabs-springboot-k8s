@@ -9,11 +9,6 @@ public class BookmarkMapper implements Function<Bookmark, BookmarkDTO> {
 
   @Override
   public BookmarkDTO apply(Bookmark b) {
-    var dto = new BookmarkDTO();
-    dto.setId(b.getId());
-    dto.setTitle(b.getTitle());
-    dto.setUrl(b.getUrl());
-    dto.setCreatedAt(b.getCreatedAt());
-    return dto;
+    return new BookmarkDTO(b.getId(), b.getTitle(), b.getUrl(), b.getCreatedAt());
   }
 }
